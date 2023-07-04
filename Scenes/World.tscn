@@ -1,0 +1,18 @@
+[gd_scene load_steps=5 format=3 uid="uid://bukiry3xs5jlq"]
+
+[ext_resource type="Script" path="res://Scripts/World.gd" id="1_t3irl"]
+[ext_resource type="PackedScene" uid="uid://bxvusksthpu0e" path="res://Scenes/Block.tscn" id="2_63ugm"]
+[ext_resource type="PackedScene" uid="uid://ch3wf7pjpbv3c" path="res://Scenes/Player.tscn" id="3_01xed"]
+[ext_resource type="PackedScene" uid="uid://bkjutte7rv5kv" path="res://Scenes/GameOverlay.tscn" id="4_u12ei"]
+
+[node name="Root" type="Node3D"]
+script = ExtResource("1_t3irl")
+block_scene = ExtResource("2_63ugm")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.906801, 0.421558, 0, -0.421558, 0.906801, 0, 5.26391, 6.06552)
+shadow_enabled = true
+
+[node name="Player" parent="." instance=ExtResource("3_01xed")]
+
+[node name="GameOverlay" parent="." instance=ExtResource("4_u12ei")]
