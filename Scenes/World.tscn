@@ -1,18 +1,42 @@
-[gd_scene load_steps=5 format=3 uid="uid://bukiry3xs5jlq"]
+[gd_scene load_steps=9 format=3 uid="uid://bukiry3xs5jlq"]
 
 [ext_resource type="Script" path="res://Scripts/World.gd" id="1_t3irl"]
 [ext_resource type="PackedScene" uid="uid://bxvusksthpu0e" path="res://Scenes/Block.tscn" id="2_63ugm"]
 [ext_resource type="PackedScene" uid="uid://ch3wf7pjpbv3c" path="res://Scenes/Player.tscn" id="3_01xed"]
 [ext_resource type="PackedScene" uid="uid://bkjutte7rv5kv" path="res://Scenes/GameOverlay.tscn" id="4_u12ei"]
+[ext_resource type="Texture2D" uid="uid://bl2agwe5bdfpn" path="res://Assets/Sky_Day_BlueSky_Equirect.png" id="5_4gnsb"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_rbegy"]
+panorama = ExtResource("5_4gnsb")
+
+[sub_resource type="Sky" id="Sky_h0p2p"]
+sky_material = SubResource("PanoramaSkyMaterial_rbegy")
+
+[sub_resource type="Environment" id="Environment_ml4y2"]
+background_mode = 2
+sky = SubResource("Sky_h0p2p")
+ambient_light_color = Color(0.501961, 0.501961, 0.501961, 1)
+ambient_light_sky_contribution = 0.5
+tonemap_mode = 2
+tonemap_white = 6.0
+ssao_enabled = true
+fog_enabled = true
+fog_sun_scatter = 0.25
+fog_density = 0.005
+fog_aerial_perspective = 0.5
+fog_sky_affect = 0.5
 
 [node name="Root" type="Node3D"]
 script = ExtResource("1_t3irl")
 block_scene = ExtResource("2_63ugm")
 
 [node name="Sun" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.906801, 0.421558, 0, -0.421558, 0.906801, 0, 5.26391, 6.06552)
+transform = Transform3D(1, 0, 0, 0, 0.481127, 0.876651, 0, -0.876651, 0.481126, 0, 7.58089, 2.74236)
 shadow_enabled = true
 
 [node name="Player" parent="." instance=ExtResource("3_01xed")]
 
 [node name="GameOverlay" parent="." instance=ExtResource("4_u12ei")]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_ml4y2")

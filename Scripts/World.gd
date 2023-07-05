@@ -11,10 +11,15 @@ func spawn_block(position: Vector3):
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
-	var size: int = 5
+	var noise = FastNoiseLite.new()
+	noise.noise_type = FastNoiseLite.TYPE_PERLIN
+
+	var size: int = 50
 	for x in range(-size, size):
 		for z in range(-size, size):
-			spawn_block(Vector3(x, -1, z))
+			var y = noise.get_noise_2d(x, z)
+			y = (y - 1) * 20
+			spawn_block(Vector3(x, roundi(y), z))
 
 
 func _process(_delta):
