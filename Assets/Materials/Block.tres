@@ -1,5 +1,4 @@
 [gd_resource type="StandardMaterial3D" format=3 uid="uid://47kblfo8gx1p"]
 
 [resource]
-uv1_scale = Vector3(3, 2, 1)
 texture_filter = 0

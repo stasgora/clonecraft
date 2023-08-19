@@ -4,16 +4,16 @@ var block_material: StandardMaterial3D = preload("res://Assets/Materials/Block.t
 
 enum Type {
 	STONE,
-	DIRT
+	DIRT,
+	BARREL_TOP_OPEN
 }
 
 var materials: Dictionary = {}
 
 func _load_material(type: Type):
 	var name = Type.keys()[type].to_lower()
-	var image = Image.load_from_file("res://Textures/Blocks/%s.png" % name)
 	var material = block_material.duplicate()
-	material.albedo_texture = ImageTexture.create_from_image(image)
+	material.albedo_texture = load("res://Textures/Blocks/%s.png" % name)
 	return material
 
 func _load_materials():
