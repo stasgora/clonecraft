@@ -5,16 +5,21 @@ extends CharacterBody3D
 @export var jump_velocity: float = 4.5
 @export var mouse_speed: float = 4
 var flying: bool = false
+var processing: bool = true
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 var mouse_delta: Vector2 = Vector2.ZERO
 
 func _input(event):
+	if not processing:
+		return
 	if event is InputEventMouseMotion:
 		mouse_delta += event.relative
 
 func _physics_process(delta):
+	if not processing:
+		return
 	rotate_y(deg_to_rad(delta * -mouse_delta.x * mouse_speed))
 	$Head.rotate_x(deg_to_rad(delta * -mouse_delta.y * mouse_speed))
 	$Head.rotation.x = clamp($Head.rotation.x, -PI/2, PI/2)
@@ -48,3 +53,7 @@ func _physics_process(delta):
 		velocity.y -= gravity * delta
 
 	move_and_slide()
+
+
+func _on_menu_toggled(open: bool):
+	processing = not open

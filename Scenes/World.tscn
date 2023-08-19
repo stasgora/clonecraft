@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://bukiry3xs5jlq"]
+[gd_scene load_steps=10 format=3 uid="uid://bukiry3xs5jlq"]
 
 [ext_resource type="Script" path="res://Scripts/World.gd" id="1_t3irl"]
 [ext_resource type="PackedScene" uid="uid://bxvusksthpu0e" path="res://Scenes/Block.tscn" id="2_63ugm"]
 [ext_resource type="PackedScene" uid="uid://ch3wf7pjpbv3c" path="res://Scenes/Player.tscn" id="3_01xed"]
 [ext_resource type="PackedScene" uid="uid://bkjutte7rv5kv" path="res://Scenes/GameOverlay.tscn" id="4_u12ei"]
 [ext_resource type="Texture2D" uid="uid://bl2agwe5bdfpn" path="res://Assets/Sky_Day_BlueSky_Equirect.png" id="5_4gnsb"]
+[ext_resource type="PackedScene" uid="uid://csu1a4xgqxw7c" path="res://Scenes/MenuOverlay.tscn" id="6_n5b8s"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_rbegy"]
 panorama = ExtResource("5_4gnsb")
@@ -40,3 +41,8 @@ shadow_enabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_ml4y2")
+
+[node name="MenuOverlay" parent="." instance=ExtResource("6_n5b8s")]
+visible = false
+
+[connection signal="menu_toggled" from="." to="Player" method="_on_menu_toggled"]
