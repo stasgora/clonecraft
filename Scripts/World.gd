@@ -32,6 +32,4 @@ func _process(_delta):
 		
 		var mouse_mode = Input.MOUSE_MODE_VISIBLE if menu_open else Input.MOUSE_MODE_CAPTURED
 		Input.set_mouse_mode(mouse_mode)
-		#$Player.set_process(!menu_open)
-		#$Player.set_physics_process(!menu_open)
 
