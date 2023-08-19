@@ -4,6 +4,7 @@ extends CharacterBody3D
 @export var speed: float = 5.0
 @export var jump_velocity: float = 4.5
 @export var mouse_speed: float = 4
+var flying: bool = false
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
@@ -15,22 +16,35 @@ func _input(event):
 
 func _physics_process(delta):
 	rotate_y(deg_to_rad(delta * -mouse_delta.x * mouse_speed))
-	$Center/Crane.rotate_x(deg_to_rad(delta * -mouse_delta.y * mouse_speed))
+	$Head.rotate_x(deg_to_rad(delta * -mouse_delta.y * mouse_speed))
+	$Head.rotation.x = clamp($Head.rotation.x, -PI/2, PI/2)
 	mouse_delta = Vector2.ZERO
-
-	if not is_on_floor():
-		velocity.y -= gravity * delta
 
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = jump_velocity
+	
+	if Input.is_action_just_pressed("fly_trigger"):
+		flying = !flying
+		print('Flying: %s' % flying)
 
-	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
-	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	var input_dir: Vector2 = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
+	var direction = Vector3(input_dir.x, 0, input_dir.y)
+	if flying:
+		direction.y = Input.get_axis("fly_down", "fly_up")
+
+	direction = (transform.basis * direction).normalized()
 	if direction:
 		velocity.x = direction.x * speed
+		if flying:
+			velocity.y = direction.y * speed
 		velocity.z = direction.z * speed
 	else:
 		velocity.x = move_toward(velocity.x, 0, speed)
+		if flying:
+			velocity.y = move_toward(velocity.y, 0, speed)
 		velocity.z = move_toward(velocity.z, 0, speed)
+
+	if not is_on_floor() and not flying:
+		velocity.y -= gravity * delta
 
 	move_and_slide()
