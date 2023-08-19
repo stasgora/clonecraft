@@ -17,27 +17,22 @@ func _input(event):
 	if event is InputEventMouseMotion:
 		mouse_delta += event.relative
 
-func _physics_process(delta):
-	if not processing:
-		return
-	rotate_y(deg_to_rad(delta * -mouse_delta.x * mouse_speed))
-	$Head.rotate_x(deg_to_rad(delta * -mouse_delta.y * mouse_speed))
-	$Head.rotation.x = clamp($Head.rotation.x, -PI/2, PI/2)
-	mouse_delta = Vector2.ZERO
-
-	if Input.is_action_just_pressed("jump") and is_on_floor():
-		velocity.y = jump_velocity
-	
-	if Input.is_action_just_pressed("fly_trigger"):
-		flying = !flying
-		print('Flying: %s' % flying)
-
+func _get_movement_direction():
 	var input_dir: Vector2 = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	var direction = Vector3(input_dir.x, 0, input_dir.y)
+	var player_transform = transform
 	if flying:
-		direction.y = Input.get_axis("fly_down", "fly_up")
+		player_transform = transform.rotated_local(Vector3.RIGHT, $Head.rotation.x)
+	direction = (player_transform.basis * direction).normalized()
+	if flying:
+		direction.y += Input.get_axis("fly_down", "fly_up")
+	return direction
 
-	direction = (transform.basis * direction).normalized()
+func _update_velocity(delta):
+	if Input.is_action_just_pressed("jump") and is_on_floor():
+		velocity.y = jump_velocity
+
+	var direction = _get_movement_direction()
 	if direction:
 		velocity.x = direction.x * speed
 		if flying:
@@ -52,6 +47,23 @@ func _physics_process(delta):
 	if not is_on_floor() and not flying:
 		velocity.y -= gravity * delta
 
+func _rotate_player(delta):
+	var rotation_change = delta * -mouse_delta * mouse_speed
+	rotate_y(deg_to_rad(rotation_change.x))
+	$Head.rotate_x(deg_to_rad(rotation_change.y))
+	$Head.rotation.x = clamp($Head.rotation.x, -PI/2, PI/2)
+	mouse_delta = Vector2.ZERO
+
+func _physics_process(delta):
+	if not processing:
+		return
+
+	if Input.is_action_just_pressed("fly_trigger"):
+		flying = !flying
+		print('Flying: %s' % flying)
+
+	_rotate_player(delta)
+	_update_velocity(delta)
 	move_and_slide()
 
 
