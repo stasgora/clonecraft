@@ -1,0 +1,49 @@
+[gd_scene load_steps=10 format=3 uid="uid://bukiry3xs5jlq"]
+
+[ext_resource type="Script" path="res://Scripts/Game.gd" id="1_axe7r"]
+[ext_resource type="PackedScene" uid="uid://ch3wf7pjpbv3c" path="res://Scenes/Player.tscn" id="3_pk7y5"]
+[ext_resource type="PackedScene" uid="uid://bkjutte7rv5kv" path="res://Scenes/GameOverlay.tscn" id="4_l4pws"]
+[ext_resource type="Texture2D" uid="uid://bl2agwe5bdfpn" path="res://Assets/Sky_Day_BlueSky_Equirect.png" id="5_fyjqe"]
+[ext_resource type="PackedScene" uid="uid://csu1a4xgqxw7c" path="res://Scenes/MenuOverlay.tscn" id="6_cwqc3"]
+[ext_resource type="PackedScene" uid="uid://57xvjbe13jhb" path="res://Scenes/World.tscn" id="6_l60qa"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_rbegy"]
+panorama = ExtResource("5_fyjqe")
+
+[sub_resource type="Sky" id="Sky_h0p2p"]
+sky_material = SubResource("PanoramaSkyMaterial_rbegy")
+
+[sub_resource type="Environment" id="Environment_ml4y2"]
+background_mode = 2
+sky = SubResource("Sky_h0p2p")
+ambient_light_color = Color(0.501961, 0.501961, 0.501961, 1)
+ambient_light_sky_contribution = 0.5
+tonemap_mode = 2
+tonemap_white = 6.0
+ssao_enabled = true
+fog_enabled = true
+fog_sun_scatter = 0.25
+fog_density = 0.005
+fog_aerial_perspective = 0.5
+fog_sky_affect = 0.5
+
+[node name="Root" type="Node3D"]
+script = ExtResource("1_axe7r")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.481127, 0.876651, 0, -0.876651, 0.481126, 0, 7.58089, 2.74236)
+shadow_enabled = true
+
+[node name="Player" parent="." instance=ExtResource("3_pk7y5")]
+
+[node name="GameOverlay" parent="." instance=ExtResource("4_l4pws")]
+
+[node name="Environment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_ml4y2")
+
+[node name="MenuOverlay" parent="." instance=ExtResource("6_cwqc3")]
+visible = false
+
+[node name="World" parent="." instance=ExtResource("6_l60qa")]
+
+[connection signal="menu_toggled" from="." to="Player" method="_on_menu_toggled"]

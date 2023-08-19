@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://csu1a4xgqxw7c"]
 
 [ext_resource type="Script" path="res://Scripts/Menu.gd" id="1_1hg3c"]
-[ext_resource type="Theme" uid="uid://om8yjwoxu1nd" path="res://Themes/MenuTheme.tres" id="2_3nat8"]
+[ext_resource type="Theme" uid="uid://om8yjwoxu1nd" path="res://Assets/Themes/MenuTheme.tres" id="2_qqe4l"]
 
 [node name="MenuOverlay" type="Control"]
 layout_mode = 3
@@ -37,7 +37,7 @@ script = ExtResource("1_1hg3c")
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme = ExtResource("2_3nat8")
+theme = ExtResource("2_qqe4l")
 text = "Exit"
 
 [connection signal="pressed" from="Background/Center/Menu/Exit" to="Background/Center/Menu" method="_on_exit_pressed"]

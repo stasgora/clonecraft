@@ -1,13 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://bxvusksthpu0e"]
+[gd_scene load_steps=4 format=3 uid="uid://bxvusksthpu0e"]
 
-[ext_resource type="Texture2D" uid="uid://bxtewx5qc4sfk" path="res://Assets/stone.png" id="1_yif56"]
+[ext_resource type="Material" uid="uid://47kblfo8gx1p" path="res://Assets/Materials/Block.tres" id="1_bv1ve"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_y4avt"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0d0p3"]
-albedo_texture = ExtResource("1_yif56")
-uv1_scale = Vector3(3, 2, 1)
-texture_filter = 0
 
 [sub_resource type="BoxMesh" id="BoxMesh_xie7n"]
 
@@ -18,6 +13,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
 shape = SubResource("BoxShape3D_y4avt")
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
-material_override = SubResource("StandardMaterial3D_0d0p3")
+material_override = ExtResource("1_bv1ve")
 mesh = SubResource("BoxMesh_xie7n")
 skeleton = NodePath("../..")
