@@ -1,12 +1,10 @@
 extends Node3D
 
-@export var block_scene: PackedScene
 
-
-func _spawn_block(pos: Vector3):
-	var block: Node3D = Blocks.get_block("grass_block")
-	block.transform.origin = pos
-	add_child(block)
+func spawn_block(block: String, pos: Vector3):
+	var node = Blocks.get_block(block)
+	node.transform.origin = pos
+	add_child(node)
 
 
 func generate_world():
@@ -18,4 +16,4 @@ func generate_world():
 		for z in range(-size, size):
 			var y = noise.get_noise_2d(x, z)
 			y = (y - 1) * 20
-			_spawn_block(Vector3(x, roundi(y), z))
+			spawn_block("grass_block", Vector3(x, roundi(y), z))

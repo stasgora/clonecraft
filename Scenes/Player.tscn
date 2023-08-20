@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://ch3wf7pjpbv3c"]
+[gd_scene load_steps=7 format=3 uid="uid://ch3wf7pjpbv3c"]
 
-[ext_resource type="Script" path="res://Scripts/Player.gd" id="1_7o3uo"]
+[ext_resource type="Script" path="res://Scripts/Player/Movement.gd" id="1_era72"]
+[ext_resource type="Script" path="res://Scripts/Player/Cursor.gd" id="2_8cnor"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_cf2eo"]
 size = Vector3(0.6, 1.8, 0.3)
@@ -15,7 +16,7 @@ size = Vector3(0.225, 0.675, 0.225)
 size = Vector3(0.45, 0.45, 0.45)
 
 [node name="Player" type="CharacterBody3D"]
-script = ExtResource("1_7o3uo")
+script = ExtResource("1_era72")
 jump_velocity = 7.0
 mouse_speed = 10.0
 
@@ -50,10 +51,14 @@ skeleton = NodePath("../Body")
 
 [node name="Crane" type="Marker3D" parent="Head"]
 transform = Transform3D(1, 0, 0, 0, 0.999999, 0, 0, 0, 0.999999, 0, 0, 0)
+script = ExtResource("2_8cnor")
 
 [node name="Camera" type="Camera3D" parent="Head/Crane"]
 transform = Transform3D(1, 0, 0, 0, 1, 1.49012e-07, 0, -1.49012e-07, 1, 0, 0, 0)
 current = true
+
+[node name="CursorRayCast" type="RayCast3D" parent="Head/Crane"]
+target_position = Vector3(0, 0, -4)
 
 [node name="ArmPivot" type="Marker3D" parent="."]
 transform = Transform3D(0.996195, -0.0871557, 0, 0.0871557, 0.996195, 0, 0, 0, 1, 0.225, 1.35, 0)
