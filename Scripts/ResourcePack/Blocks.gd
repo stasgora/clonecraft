@@ -55,6 +55,18 @@ func _load_material(mat_name: String) -> StandardMaterial3D:
 	return material
 
 
+func _is_tinted(config: Dictionary, slot: String) -> bool:
+	if "parent" in config and "block/leaves" in config["parent"]:
+		return true
+	if "elements" not in config:
+		return false
+	for element in config["elements"]:
+		for face in element["faces"].values():
+			if face["texture"] == "#" + slot and "tintindex" in face:
+				return true
+	return false
+
+
 func _load_model(model_name: String) -> void:
 	var model_path = "%s/%s.json" % [_model_path, model_name]
 	var config = ResourcePackManager.load_json(model_path)
@@ -76,6 +88,8 @@ func _load_model(model_name: String) -> void:
 				return
 			var texture = side_value.split("/")[1]
 			var model_material = _load_material(texture)
+			if _is_tinted(config, slot):
+				model_material.albedo_color = Color(.35, .6, .22, 1)
 			mesh.set_surface_override_material(side, model_material)
 
 	_models[model_name] = block
