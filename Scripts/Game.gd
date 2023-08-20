@@ -8,7 +8,7 @@ func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	ResourcePackManager.load_resource_pack("Vanilla")
 	Blocks.load_models()
-	$World.geterate_world()
+	$World.generate_world()
 
 
 func _process(_delta):

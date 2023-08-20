@@ -4,12 +4,12 @@ extends Node3D
 
 
 func _spawn_block(pos: Vector3):
-	var block: Node3D = Blocks.get_block("andesite")
+	var block: Node3D = Blocks.get_block("grass_block")
 	block.transform.origin = pos
 	add_child(block)
 
 
-func geterate_world():
+func generate_world():
 	var noise = FastNoiseLite.new()
 	noise.noise_type = FastNoiseLite.TYPE_PERLIN
 

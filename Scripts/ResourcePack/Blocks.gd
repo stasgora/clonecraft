@@ -17,6 +17,34 @@ enum BlockSceneSides {
 	BACK
 }
 
+var _model_texture_map = {
+	'all': [
+		BlockSceneSides.FRONT,
+		BlockSceneSides.RIGHT,
+		BlockSceneSides.LEFT,
+		BlockSceneSides.BACK,
+		BlockSceneSides.TOP,
+		BlockSceneSides.BOTTOM
+	],
+	'side': [
+		BlockSceneSides.FRONT,
+		BlockSceneSides.RIGHT,
+		BlockSceneSides.LEFT,
+		BlockSceneSides.BACK,
+	],
+	'end': [BlockSceneSides.TOP, BlockSceneSides.BOTTOM],
+	'front': [BlockSceneSides.FRONT],
+	'back': [BlockSceneSides.BACK],
+	'top': [BlockSceneSides.TOP],
+	'bottom': [BlockSceneSides.BOTTOM],
+	'north': [BlockSceneSides.FRONT],
+	'south': [BlockSceneSides.BACK],
+	'east': [BlockSceneSides.LEFT],
+	'west': [BlockSceneSides.RIGHT],
+	'up': [BlockSceneSides.TOP],
+	'down': [BlockSceneSides.BOTTOM],
+}
+
 func _load_material(mat_name: String) -> StandardMaterial3D:
 	if mat_name in _materials:
 		return _materials[mat_name]
@@ -30,15 +58,25 @@ func _load_material(mat_name: String) -> StandardMaterial3D:
 func _load_model(model_name: String) -> void:
 	var model_path = "%s/%s.json" % [_model_path, model_name]
 	var config = ResourcePackManager.load_json(model_path)
-	if config.get("parent") != "minecraft:block/cube_all":
+	
+	if "textures" not in config:
+		return
+	var texture_slots = config["textures"].keys()
+	texture_slots.erase("particle")
+	texture_slots.erase("overlay")
+	if not _model_texture_map.has_all(texture_slots):
 		return
 
-	var texture = config["textures"]["all"].split("/")[1]
-	var model_material = _load_material(texture)
 	var block: Node3D = block_scene.instantiate()
 	var mesh: MeshInstance3D = block.get_node("Mesh")
-	for i in range(6):
-		mesh.set_surface_override_material(i, model_material)
+	for slot in texture_slots:
+		for side in _model_texture_map[slot]:
+			var side_value = config["textures"][slot]
+			if "block/" not in side_value:
+				return
+			var texture = side_value.split("/")[1]
+			var model_material = _load_material(texture)
+			mesh.set_surface_override_material(side, model_material)
 
 	_models[model_name] = block
 
