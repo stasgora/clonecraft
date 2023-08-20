@@ -3,16 +3,13 @@ extends Node3D
 @export var block_scene: PackedScene
 
 
-func _spawn_block(position: Vector3):
-	var block: Node3D = block_scene.instantiate()
-	var mesh: MeshInstance3D = block.get_node("Mesh")
-	for i in range(6):
-		mesh.set_surface_override_material(i, Blocks.material(Blocks.Type.BARREL_TOP_OPEN))
-	mesh.set_surface_override_material(0, Blocks.material(Blocks.Type.DIRT))
-	block.transform.origin = position
+func _spawn_block(pos: Vector3):
+	var block: Node3D = Blocks.get_block("andesite")
+	block.transform.origin = pos
 	add_child(block)
 
-func _ready():
+
+func geterate_world():
 	var noise = FastNoiseLite.new()
 	noise.noise_type = FastNoiseLite.TYPE_PERLIN
 

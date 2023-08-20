@@ -1,0 +1,55 @@
+extends Node
+
+var block_scene: PackedScene = preload("res://Scenes/Block.tscn")
+var block_material: StandardMaterial3D = preload("res://Assets/Materials/Block.tres")
+
+const _model_path = "models/block"
+const _texture_path = "textures/block"
+var _models: Dictionary = {}
+var _materials: Dictionary = {}
+
+enum BlockSceneSides {
+	TOP,
+	BOTTOM,
+	LEFT,
+	RIGHT,
+	FRONT,
+	BACK
+}
+
+func _load_material(mat_name: String) -> StandardMaterial3D:
+	if mat_name in _materials:
+		return _materials[mat_name]
+	var material = block_material.duplicate()
+	var path = "%s/%s.png" % [_texture_path, mat_name]
+	material.albedo_texture = ResourcePackManager.load_texture(path)
+	_materials[mat_name] = material
+	return material
+
+
+func _load_model(model_name: String) -> void:
+	var model_path = "%s/%s.json" % [_model_path, model_name]
+	var config = ResourcePackManager.load_json(model_path)
+	if config.get("parent") != "minecraft:block/cube_all":
+		return
+
+	var texture = config["textures"]["all"].split("/")[1]
+	var model_material = _load_material(texture)
+	var block: Node3D = block_scene.instantiate()
+	var mesh: MeshInstance3D = block.get_node("Mesh")
+	for i in range(6):
+		mesh.set_surface_override_material(i, model_material)
+
+	_models[model_name] = block
+
+
+func load_models():
+	print('Loading block models')
+	var blocks = ResourcePackManager.list_files(_model_path)
+	for file in blocks:
+		_load_model(file.get_basename())
+
+
+func get_block(model_name: String) -> Node3D:
+	assert(model_name in _models, "Model %s does not exist" % model_name)
+	return _models[model_name].duplicate()

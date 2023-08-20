@@ -6,6 +6,10 @@ var menu_open: bool = false
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	ResourcePackManager.load_resource_pack("Vanilla")
+	Blocks.load_models()
+	$World.geterate_world()
+
 
 func _process(_delta):
 	if Input.is_action_just_pressed("menu"):
