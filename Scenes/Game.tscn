@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bukiry3xs5jlq"]
+[gd_scene load_steps=11 format=3 uid="uid://bukiry3xs5jlq"]
 
 [ext_resource type="Script" path="res://Scripts/Game.gd" id="1_axe7r"]
 [ext_resource type="PackedScene" uid="uid://ch3wf7pjpbv3c" path="res://Scenes/Player.tscn" id="3_pk7y5"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://bl2agwe5bdfpn" path="res://Assets/Sky_Day_BlueSky_Equirect.png" id="5_fyjqe"]
 [ext_resource type="PackedScene" uid="uid://csu1a4xgqxw7c" path="res://Scenes/MenuOverlay.tscn" id="6_cwqc3"]
 [ext_resource type="PackedScene" uid="uid://57xvjbe13jhb" path="res://Scenes/World.tscn" id="6_l60qa"]
+[ext_resource type="Script" path="res://Scripts/World/Loader.gd" id="7_d4i8d"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_rbegy"]
 panorama = ExtResource("5_fyjqe")
@@ -45,5 +46,8 @@ environment = SubResource("Environment_ml4y2")
 visible = false
 
 [node name="World" parent="." instance=ExtResource("6_l60qa")]
+script = ExtResource("7_d4i8d")
+load_distance = 2
+chunk_size = 16
 
 [connection signal="menu_toggled" from="." to="Player" method="_on_menu_toggled"]

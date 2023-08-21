@@ -5,10 +5,10 @@ var menu_open: bool = false
 
 
 func _ready():
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	ResourcePackManager.load_resource_pack("Vanilla")
 	Blocks.load_models()
 	$World.generate_world()
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 
 func _process(_delta):
@@ -20,4 +20,3 @@ func _process(_delta):
 		
 		var mouse_mode = Input.MOUSE_MODE_VISIBLE if menu_open else Input.MOUSE_MODE_CAPTURED
 		Input.set_mouse_mode(mouse_mode)
-

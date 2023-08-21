@@ -17,6 +17,7 @@ func _input(event):
 	if event is InputEventMouseMotion:
 		mouse_delta += event.relative
 
+
 func _get_movement_direction():
 	var input_dir: Vector2 = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	var direction = Vector3(input_dir.x, 0, input_dir.y)
@@ -27,6 +28,7 @@ func _get_movement_direction():
 	if flying:
 		direction.y += Input.get_axis("fly_down", "fly_up")
 	return direction
+
 
 func _update_velocity(delta):
 	if Input.is_action_just_pressed("jump") and is_on_floor():
@@ -47,12 +49,14 @@ func _update_velocity(delta):
 	if not is_on_floor() and not flying:
 		velocity.y -= gravity * delta
 
+
 func _rotate_player(delta):
 	var rotation_change = delta * -mouse_delta * mouse_speed
 	rotate_y(deg_to_rad(rotation_change.x))
 	$Head.rotate_x(deg_to_rad(rotation_change.y))
 	$Head.rotation.x = clamp($Head.rotation.x, -PI/2, PI/2)
 	mouse_delta = Vector2.ZERO
+
 
 func _physics_process(delta):
 	if not processing:
