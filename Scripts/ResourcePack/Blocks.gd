@@ -1,7 +1,6 @@
 extends Node
 
 var block_scene: PackedScene = preload("res://Scenes/Block.tscn")
-var block_material: StandardMaterial3D = preload("res://Assets/Materials/Block.tres")
 
 const _model_path = "models/block"
 const _texture_path = "textures/block"
@@ -48,7 +47,8 @@ var _model_texture_map = {
 func _load_material(mat_name: String) -> StandardMaterial3D:
 	if mat_name in _materials:
 		return _materials[mat_name]
-	var material = block_material.duplicate()
+	var material = StandardMaterial3D.new()
+	material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
 	var path = "%s/%s.png" % [_texture_path, mat_name]
 	material.albedo_texture = ResourcePackManager.load_texture(path)
 	_materials[mat_name] = material
