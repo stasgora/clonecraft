@@ -1,8 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://bxvusksthpu0e"]
+[gd_resource type="ArrayMesh" format=3 uid="uid://b5r7jkxtum724"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_y4avt"]
-
-[sub_resource type="ArrayMesh" id="ArrayMesh_nu0v4"]
+[resource]
 resource_name = "Qube2_Cube"
 _surfaces = [{
 "aabb": AABB(-0.5, 0.5, -0.5, 1.00001, 1.00136e-05, 1),
@@ -66,13 +64,3 @@ _surfaces = [{
 "vertex_data": PackedByteArray(0, 0, 0, 191, 0, 0, 0, 63, 0, 0, 0, 191, 0, 0, 255, 127, 255, 127, 255, 191, 0, 0, 0, 191, 0, 0, 0, 191, 0, 0, 0, 191, 0, 0, 255, 127, 255, 127, 255, 191, 0, 0, 0, 191, 0, 0, 0, 63, 0, 0, 0, 63, 0, 0, 255, 127, 255, 127, 255, 191, 0, 0, 0, 191, 0, 0, 0, 191, 0, 0, 0, 63, 0, 0, 255, 127, 255, 127, 255, 191)
 }]
 blend_shape_mode = 0
-
-[node name="BlockBody" type="StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
-
-[node name="Collision" type="CollisionShape3D" parent="."]
-shape = SubResource("BoxShape3D_y4avt")
-
-[node name="Mesh" type="MeshInstance3D" parent="."]
-mesh = SubResource("ArrayMesh_nu0v4")
-skeleton = NodePath("")

@@ -1,6 +1,6 @@
 extends Node
 
-var block_scene: PackedScene = preload("res://Scenes/Block.tscn")
+var block_mesh: Mesh = preload("res://Assets/Block.tres")
 
 const _model_path = "models/block"
 const _texture_path = "textures/block"
@@ -79,8 +79,7 @@ func _load_model(model_name: String) -> void:
 	if not _model_texture_map.has_all(texture_slots):
 		return
 
-	var block: Node3D = block_scene.instantiate()
-	var mesh: MeshInstance3D = block.get_node("Mesh")
+	var block: Mesh = block_mesh.duplicate()
 	for slot in texture_slots:
 		for side in _model_texture_map[slot]:
 			var side_value = config["textures"][slot]
@@ -90,7 +89,7 @@ func _load_model(model_name: String) -> void:
 			var model_material = _load_material(texture)
 			if _is_tinted(config, slot):
 				model_material.albedo_color = Color(.35, .6, .22, 1)
-			mesh.set_surface_override_material(side, model_material)
+			block.surface_set_material(side, model_material)
 
 	_models[model_name] = block
 
@@ -102,6 +101,6 @@ func load_models():
 		_load_model(file.get_basename())
 
 
-func get_block(model_name: String) -> Node3D:
+func get_block(model_name: String) -> Mesh:
 	assert(model_name in _models, "Model %s does not exist" % model_name)
-	return _models[model_name].duplicate()
+	return _models[model_name]
