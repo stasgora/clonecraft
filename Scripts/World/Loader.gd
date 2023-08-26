@@ -65,4 +65,4 @@ func _generate_chunk(chunk_pos: Vector3i):
 			for z in range(chunk_size):
 				var block_pos = Vector3i(x, y, z)
 				var block = Generator.block_at(block_pos + base_pos)
-				chunk[x][y][z] = block
+				chunk[block_pos] = Block.new(block)
