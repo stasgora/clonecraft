@@ -1,4 +1,4 @@
-extends Node3D
+class_name Generator
 
 var _noise = FastNoiseLite.new()
 

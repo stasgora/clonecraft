@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 ResourcePackManager="*res://Scripts/ResourcePack/Manager.gd"
 Blocks="*res://Scripts/ResourcePack/Blocks.gd"
+Chunks="*res://Scripts/World/Chunks.gd"
 
 [display]
 

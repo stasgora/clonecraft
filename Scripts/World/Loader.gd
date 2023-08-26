@@ -1,11 +1,9 @@
 extends Node
 
 @export var load_distance: int = 5
-@export var chunk_size: int = 16
 var _mesh_map: Dictionary = {}
 
-var Chunks = preload("res://Scripts/World/Chunks.gd").new(chunk_size)
-var Generator = preload("res://Scripts/World/Generator.gd").new()
+var generator = Generator.new()
 
 
 func generate_world():
@@ -35,9 +33,9 @@ func _create_block_collider(pos: Vector3i):
 	return collider
 
 
-func _load_chunk(chunk_pos: Vector3i):
-	var base_pos = chunk_pos * chunk_size
-	var content = Chunks.get_chunk_content(chunk_pos)
+func _load_chunk(index: Vector3i):
+	var base_pos = Chunks.get_chunk_pos(index)
+	var content = Chunks.get_chunk_content(index)
 	for block in content:
 		if block == "air":
 			continue
@@ -47,12 +45,12 @@ func _load_chunk(chunk_pos: Vector3i):
 		batch.add_meshes(content[block], base_pos)
 
 
-func _generate_chunk(chunk_pos: Vector3i):
-	var chunk = Chunks.get_chunk(chunk_pos)
-	var base_pos = chunk_pos * chunk_size
-	for x in range(chunk_size):
-		for y in range(chunk_size):
-			for z in range(chunk_size):
+func _generate_chunk(index: Vector3i):
+	var chunk = Chunks.get_chunk(index)
+	var base_pos = Chunks.get_chunk_pos(index)
+	for x in range(Chunks.size):
+		for y in range(Chunks.size):
+			for z in range(Chunks.size):
 				var block_pos = Vector3i(x, y, z)
-				var block = Generator.block_at(block_pos + base_pos)
+				var block = generator.block_at(block_pos + base_pos)
 				chunk[block_pos] = Block.new(block)

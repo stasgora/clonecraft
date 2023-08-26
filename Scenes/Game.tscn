@@ -48,6 +48,5 @@ visible = false
 [node name="World" parent="." instance=ExtResource("6_l60qa")]
 script = ExtResource("7_d4i8d")
 load_distance = 2
-chunk_size = 16
 
 [connection signal="menu_toggled" from="." to="Player" method="_on_menu_toggled"]
