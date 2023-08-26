@@ -10,10 +10,10 @@ func _process_cursor():
 	selected_object.emit(ray_collider)
 
 	if Input.is_action_just_pressed("destroy"):
-		ray_collider.queue_free()
+		pass
 	if Input.is_action_just_pressed("place"):
 		var pos = ray_collider.position + $CursorRayCast.get_collision_normal()
-		get_tree().get_root().get_node("Root/World").spawn_block("grass_block", pos)
+		#get_tree().get_root().get_node("Root/World").spawn_block("grass_block", pos)
 
 
 func _physics_process(_delta):

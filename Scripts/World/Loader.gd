@@ -31,6 +31,15 @@ func _get_multimesh(block: String):
 	return _mesh_map[block]
 
 
+func _create_block_collider(pos: Vector3i):
+	var collider = StaticBody3D.new()
+	var shape = CollisionShape3D.new()
+	shape.shape = BoxShape3D.new()
+	collider.transform = Transform3D(Basis(), pos)
+	collider.add_child(shape)
+	return collider
+
+
 func _load_chunk(chunk_pos: Vector3i):
 	var base_pos = chunk_pos * chunk_size
 	var basis = Basis()
@@ -43,6 +52,7 @@ func _load_chunk(chunk_pos: Vector3i):
 		for pos in content[block]:
 			var transform = [basis.x, basis.y, basis.z, pos + base_pos]
 			transforms += PackedVector3Array(transform)
+			add_child(_create_block_collider(pos + base_pos))
 		mesh.multimesh.instance_count += content[block].size()
 		mesh.multimesh.transform_array = transforms
 
