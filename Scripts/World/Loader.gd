@@ -19,15 +19,10 @@ func generate_world():
 				_load_chunk(pos)
 
 
-func _get_multimesh(block: String):
+func _get_mesh_batch(block: String):
 	if block not in _mesh_map:
-		var mesh = MultiMesh.new()
-		mesh.mesh = Blocks.get_block(block)
-		mesh.transform_format = MultiMesh.TRANSFORM_3D
-		_mesh_map[block] = MultiMeshInstance3D.new()
-		_mesh_map[block].multimesh = mesh
-		_mesh_map[block].name = block
-		add_child(_mesh_map[block])
+		_mesh_map[block] = MeshBatch.new(block)
+		add_child(_mesh_map[block].batch)
 	return _mesh_map[block]
 
 
@@ -42,19 +37,14 @@ func _create_block_collider(pos: Vector3i):
 
 func _load_chunk(chunk_pos: Vector3i):
 	var base_pos = chunk_pos * chunk_size
-	var basis = Basis()
 	var content = Chunks.get_chunk_content(chunk_pos)
 	for block in content:
 		if block == "air":
 			continue
-		var mesh = _get_multimesh(block)
-		var transforms = mesh.multimesh.transform_array
 		for pos in content[block]:
-			var transform = [basis.x, basis.y, basis.z, pos + base_pos]
-			transforms += PackedVector3Array(transform)
 			add_child(_create_block_collider(pos + base_pos))
-		mesh.multimesh.instance_count += content[block].size()
-		mesh.multimesh.transform_array = transforms
+		var batch: MeshBatch = _get_mesh_batch(block)
+		batch.add_meshes(content[block], base_pos)
 
 
 func _generate_chunk(chunk_pos: Vector3i):
