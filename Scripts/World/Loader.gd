@@ -24,13 +24,14 @@ func _get_mesh_batch(block: String):
 	return _mesh_map[block]
 
 
-func _create_block_collider(pos: Vector3i):
+func _load_block_collider(pos: Vector3i):
 	var collider = StaticBody3D.new()
 	var shape = CollisionShape3D.new()
 	shape.shape = BoxShape3D.new()
 	collider.transform = Transform3D(Basis(), pos)
 	collider.add_child(shape)
-	return collider
+	Chunks.get_block(pos).collider = collider
+	add_child(collider)
 
 
 func _load_chunk(index: Vector3i):
@@ -39,18 +40,40 @@ func _load_chunk(index: Vector3i):
 	for block in content:
 		if block == "air":
 			continue
-		for pos in content[block]:
-			add_child(_create_block_collider(pos + base_pos))
+		for i in range(content[block].size()):
+			var block_pos = content[block][i] + base_pos
+			content[block][i] = block_pos
+			_load_block_collider(block_pos)
 		var batch: MeshBatch = _get_mesh_batch(block)
-		batch.add_meshes(content[block], base_pos)
+		batch.load_meshes(content[block])
+
+
+func unload_block(pos: Vector3i):
+	if not Chunks.block_exists(pos):
+		print('No block exists at %s' % pos)
+		return
+	var block = Chunks.get_block(pos)
+	_get_mesh_batch(block.name).unload_meshes([pos])
+	block.collider.queue_free()
+	Chunks.remove_block(pos)
+
+
+func spawn_block(block: String, pos: Vector3i):
+	if Chunks.block_exists(pos):
+		print('Block already exists at %s' % pos)
+		return
+	Chunks.place_block(Block.new(block), pos)
+	_get_mesh_batch(block).load_meshes([pos])
+	_load_block_collider(pos)
 
 
 func _generate_chunk(index: Vector3i):
-	var chunk = Chunks.get_chunk(index)
 	var base_pos = Chunks.get_chunk_pos(index)
 	for x in range(Chunks.size):
 		for y in range(Chunks.size):
 			for z in range(Chunks.size):
-				var block_pos = Vector3i(x, y, z)
-				var block = generator.block_at(block_pos + base_pos)
-				chunk[block_pos] = Block.new(block)
+				var block_pos = Vector3i(x, y, z) + base_pos
+				var block = generator.block_at(block_pos)
+				if block == "air":
+					continue
+				Chunks.place_block(Block.new(block), block_pos)

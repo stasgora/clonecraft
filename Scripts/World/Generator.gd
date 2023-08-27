@@ -3,9 +3,9 @@ class_name Generator
 var _noise = FastNoiseLite.new()
 
 
-func _init(selected_seed = null):
+func _init(seed = null):
 	_noise.noise_type = FastNoiseLite.TYPE_PERLIN
-	_noise.seed = selected_seed or randi()
+	_noise.seed = seed if seed else randi()
 
 
 func block_at(pos: Vector3i) -> String:
