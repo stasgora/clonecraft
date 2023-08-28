@@ -101,6 +101,6 @@ func load_models():
 		_load_model(file.get_basename())
 
 
-func get_block(model_name: String) -> Mesh:
+func get_model(model_name: String) -> Mesh:
 	assert(model_name in _models, "Model %s does not exist" % model_name)
 	return _models[model_name]

@@ -4,6 +4,7 @@ extends Node
 var _mesh_map: Dictionary = {}
 
 var generator = Generator.new()
+var collider = preload("res://Scenes/Collider.tscn")
 
 
 func generate_world():
@@ -25,13 +26,9 @@ func _get_mesh_batch(block: String):
 
 
 func _load_block_collider(pos: Vector3i):
-	var collider = StaticBody3D.new()
-	var shape = CollisionShape3D.new()
-	shape.shape = BoxShape3D.new()
-	collider.transform = Transform3D(Basis(), pos)
-	collider.add_child(shape)
-	Chunks.get_block(pos).collider = collider
-	add_child(collider)
+	var block = collider.instantiate()
+	block.position = pos
+	add_child(block)
 
 
 func _load_chunk(index: Vector3i):

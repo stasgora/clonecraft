@@ -10,7 +10,7 @@ func _init(block_name: String):
 	name = block_name
 
 	var multi_mesh = MultiMesh.new()
-	multi_mesh.mesh = Blocks.get_block(name)
+	multi_mesh.mesh = Blocks.get_model(name)
 	multi_mesh.transform_format = MultiMesh.TRANSFORM_3D
 	batch = MultiMeshInstance3D.new()
 	batch.multimesh = multi_mesh
