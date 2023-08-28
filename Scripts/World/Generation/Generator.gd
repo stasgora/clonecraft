@@ -1,15 +1,15 @@
 class_name Generator
 
-var _noise = FastNoiseLite.new()
+var _map: NoiseMap
 
 
-func _init(seed = null):
-	_noise.noise_type = FastNoiseLite.TYPE_PERLIN
-	_noise.seed = seed if seed else randi()
+func _init(world_seed = null):
+	var seed = world_seed if world_seed else randi()
+	_map = NoiseMap.new(seed)
 
 
 func block_at(pos: Vector3i) -> String:
-	var y = _noise.get_noise_2d(pos.x, pos.z)
+	var y = _map.get_noise_at(Vector2i(pos.x, pos.z))
 	y = roundi((y - 1) * 20)
 	if pos.y > y:
 		return "air"

@@ -48,7 +48,7 @@ func _load_chunk(index: Vector3i):
 		batch.load_meshes(content[block])
 
 
-func unload_block(pos: Vector3i):
+func remove_block(pos: Vector3i):
 	if not Chunks.block_exists(pos):
 		print('No block exists at %s' % pos)
 		return
@@ -58,7 +58,7 @@ func unload_block(pos: Vector3i):
 	Chunks.remove_block(pos)
 
 
-func spawn_block(block: String, pos: Vector3i):
+func place_block(block: String, pos: Vector3i):
 	if Chunks.block_exists(pos):
 		print('Block already exists at %s' % pos)
 		return
