@@ -8,6 +8,10 @@ func _init(world_seed = null):
 	_map = NoiseMap.new(seed)
 
 
+func generate_chunk(chunk: Vector3i):
+	_map.generate_chunk(Vector2i(chunk.x, chunk.z))
+
+
 func block_at(pos: Vector3i) -> String:
 	var y = _map.get_noise_at(Vector2i(pos.x, pos.z))
 	y = roundi((y - 1) * 20)

@@ -11,6 +11,10 @@ func _get_chunk(index: Vector3i) -> Dictionary:
 	return _chunks[index]
 
 
+func is_chunk_generated(index: Vector3i) -> bool:
+	return index in _chunks
+
+
 func get_block_pos_in_chunk(world_pos: Vector3i) -> Vector3i:
 	return Vector3i(
 		Utils.mod(world_pos.x, size),

@@ -65,6 +65,9 @@ func place_block(block: String, pos: Vector3i):
 
 
 func _generate_chunk(index: Vector3i):
+	if Chunks.is_chunk_generated(index):
+		return
+	generator.generate_chunk(index)
 	var base_pos = Chunks.get_chunk_pos(index)
 	for x in range(Chunks.size):
 		for y in range(Chunks.size):
